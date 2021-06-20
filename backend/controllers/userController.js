@@ -1,6 +1,10 @@
 import asyncHandler from 'express-async-handler'
 import generateToken from '../utils/generateToken.js'
 import User from '../models/userModel.js'
+import {
+  userValidation,
+  loginValidation,
+} from '../validation/userValidation.js'
 
 //@desc  Auth user & get token
 //@route  POST /users/login
@@ -8,6 +12,10 @@ import User from '../models/userModel.js'
 
 const authUser = asyncHandler(async (req, res) => {
   const { username, password } = req.body
+
+  //Validate infos
+  const { error } = loginValidation(req.body)
+  if (error) return res.status(400).json({ message: error.details[0].message })
 
   const user = await User.findOne({ username })
 
@@ -28,6 +36,10 @@ const authUser = asyncHandler(async (req, res) => {
 
 const registerUser = asyncHandler(async (req, res) => {
   const { username, password } = req.body
+
+  //Validate infos
+  const { error } = userValidation(req.body)
+  if (error) return res.status(400).json({ message: error.details[0].message })
 
   const userExists = await User.findOne({ username })
 
