@@ -6,6 +6,7 @@ import connectDB from './config/db.js'
 import { notFound, errorHandler } from './middleware/errorMiddleware.js'
 dotenv.config()
 import userRoutes from './routes/userRoutes.js'
+import todosRoutes from './routes/todosRoutes.js'
 
 // database connection
 connectDB()
@@ -17,6 +18,7 @@ app.use(express.json())
 app.use(cors())
 
 app.use('/users', userRoutes)
+app.use('/todos', todosRoutes)
 // not found
 app.use(notFound)
 // error Handler
