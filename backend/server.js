@@ -7,6 +7,7 @@ import { notFound, errorHandler } from './middleware/errorMiddleware.js'
 dotenv.config()
 import userRoutes from './routes/userRoutes.js'
 import todosRoutes from './routes/todosRoutes.js'
+import listRoutes from './routes/listRoutes.js'
 
 // database connection
 connectDB()
@@ -19,6 +20,7 @@ app.use(cors())
 
 app.use('/users', userRoutes)
 app.use('/todos', todosRoutes)
+app.use('/lists', listRoutes)
 // not found
 app.use(notFound)
 // error Handler

@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+import mongoose from 'mongoose'
 
 const listSchema = mongoose.Schema({
   name: {
@@ -7,4 +7,6 @@ const listSchema = mongoose.Schema({
   },
 })
 
-exports.List = mongoose.model('List', listSchema)
+const List = mongoose.model('List', listSchema)
+
+export default List
