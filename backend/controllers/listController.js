@@ -6,7 +6,7 @@ import { listValidation } from '../validation/listValidation.js'
 //@route  POST /lists/add
 //@access Public
 
-const addTodos = asyncHandler(async (req, res) => {
+const addList = asyncHandler(async (req, res) => {
   const { name } = req.body
 
   //Validate infos
@@ -34,3 +34,5 @@ const addTodos = asyncHandler(async (req, res) => {
     throw new Error('Invalid list data')
   }
 })
+
+export { addList }
