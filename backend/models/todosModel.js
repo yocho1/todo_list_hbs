@@ -9,6 +9,11 @@ const todosSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'List',
   },
+  isChecked: {
+    type: Boolean,
+    required: true,
+    default: false,
+  },
 })
 const Todos = mongoose.model('Todos', todosSchema)
 

@@ -16,7 +16,7 @@ const getTodos = asyncHandler(async (req, res) => {
 //@access Public
 
 const addTodos = asyncHandler(async (req, res) => {
-  const { title, list } = req.body
+  const { title, list, isChecked } = req.body
 
   //Validate infos
   const { error } = todoValidation(req.body)
@@ -32,6 +32,7 @@ const addTodos = asyncHandler(async (req, res) => {
   const todo = await Todos.create({
     title,
     list,
+    isChecked,
   })
 
   if (todo) {
@@ -39,6 +40,7 @@ const addTodos = asyncHandler(async (req, res) => {
       _id: todo._id,
       title: todo.title,
       list: todo.list,
+      done: todo.isChecked,
     })
   } else {
     res.status(400)
@@ -77,4 +79,22 @@ const UpdateTodo = asyncHandler(async (req, res) => {
   res.send(todo)
 })
 
-export { getTodos, addTodos, deleteTodo, UpdateTodo }
+//@desc  Archive todo
+//@route  PUT /todos/done
+//@access Public
+
+const archiveTodo = asyncHandler(async (req, res) => {
+  const todo = await Todos.findByIdAndUpdate(
+    req.params.id,
+    {
+      isChecked: req.body.isChecked,
+    },
+    { new: true }
+  )
+
+  if (!todo) return res.status(400).send('the todo cannot be done!')
+
+  res.send(todo)
+})
+
+export { getTodos, addTodos, deleteTodo, UpdateTodo, archiveTodo }

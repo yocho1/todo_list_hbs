@@ -44,4 +44,17 @@ const getLists = asyncHandler(async (req, res) => {
   res.json(lists)
 })
 
-export { addList, getLists }
+//@desc  remove List
+//@route  DELETE /todos/add
+//@access Public
+
+const deleteList = asyncHandler(async (req, res) => {
+  await List.findByIdAndRemove(req.params.id, function (err) {
+    if (err) {
+      return res.status(404).send({ message: 'Cannot delete the List' })
+    }
+    res.status(201).send('List removed')
+  })
+})
+
+export { addList, getLists, deleteList }
