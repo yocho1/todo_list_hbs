@@ -57,4 +57,22 @@ const deleteTodo = asyncHandler(async (req, res) => {
   })
 })
 
-export { getTodos, addTodos, deleteTodo }
+//@desc  update todo
+//@route  PUT /todos/add
+//@access Public
+
+const UpdateTodo = asyncHandler(async (req, res) => {
+  const todo = await Todos.findByIdAndUpdate(
+    req.params.id,
+    {
+      title: req.body.title,
+    },
+    { new: true }
+  )
+
+  if (!todo) return res.status(400).send('the todo cannot be update!')
+
+  res.send(todo)
+})
+
+export { getTodos, addTodos, deleteTodo, UpdateTodo }
