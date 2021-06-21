@@ -44,4 +44,17 @@ const addTodos = asyncHandler(async (req, res) => {
   }
 })
 
-export { getTodos, addTodos }
+//@desc  remove todo
+//@route  POST /todos/add
+//@access Public
+
+const deleteTodo = asyncHandler(async (req, res) => {
+  await Todos.findByIdAndRemove(req.params.id, function (err) {
+    if (err) {
+      return res.status(404).send({ message: 'Cannot delete the Todo' })
+    }
+    res.status(201).send('Todo removed')
+  })
+})
+
+export { getTodos, addTodos, deleteTodo }
