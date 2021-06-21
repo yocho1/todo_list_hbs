@@ -35,4 +35,13 @@ const addList = asyncHandler(async (req, res) => {
   }
 })
 
-export { addList }
+//@desc  Fetch all lists
+//@route  GET /lists
+//@access Public
+
+const getLists = asyncHandler(async (req, res) => {
+  const lists = await List.find({})
+  res.json(lists)
+})
+
+export { addList, getLists }
