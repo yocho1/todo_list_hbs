@@ -7,7 +7,7 @@ import { todoValidation } from '../validation/todoValidation.js'
 //@access Public
 
 const getTodos = asyncHandler(async (req, res) => {
-  const todos = await Todos.find({})
+  const todos = await Todos.find({}).populate('list', 'name')
   res.json(todos)
 })
 
@@ -16,7 +16,7 @@ const getTodos = asyncHandler(async (req, res) => {
 //@access Public
 
 const addTodos = asyncHandler(async (req, res) => {
-  const { title } = req.body
+  const { title, list } = req.body
 
   //Validate infos
   const { error } = todoValidation(req.body)
@@ -31,12 +31,14 @@ const addTodos = asyncHandler(async (req, res) => {
 
   const todo = await Todos.create({
     title,
+    list,
   })
 
   if (todo) {
     res.status(201).json({
       _id: todo._id,
       title: todo.title,
+      list: todo.list,
     })
   } else {
     res.status(400)

@@ -8,7 +8,6 @@ const todosSchema = new mongoose.Schema({
   list: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'List',
-    required: true,
   },
 })
 const Todos = mongoose.model('Todos', todosSchema)
