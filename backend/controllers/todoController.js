@@ -7,6 +7,7 @@ import { todoValidation } from '../validation/todoValidation.js'
 //@access Public
 
 const getTodos = asyncHandler(async (req, res) => {
+  // display all todos
   const todos = await Todos.find({}).populate('list', 'name')
   res.json(todos)
 })
@@ -16,19 +17,21 @@ const getTodos = asyncHandler(async (req, res) => {
 //@access Public
 
 const addTodos = asyncHandler(async (req, res) => {
+  // Get todo infos
   const { title, list, isChecked } = req.body
 
   //Validate infos
   const { error } = todoValidation(req.body)
   if (error) return res.status(400).json({ message: error.details[0].message })
 
+  // check if the todo already exist
   const todoExists = await Todos.findOne({ title })
 
   if (todoExists) {
     res.status(400)
     throw new Error('todo already exists')
   }
-
+  // save todo
   const todo = await Todos.create({
     title,
     list,
@@ -53,6 +56,7 @@ const addTodos = asyncHandler(async (req, res) => {
 //@access Public
 
 const deleteTodo = asyncHandler(async (req, res) => {
+  // find todo by id &  delete it
   await Todos.findByIdAndRemove(req.params.id, function (err) {
     if (err) {
       return res.status(404).send({ message: 'Cannot delete the Todo' })
@@ -66,6 +70,7 @@ const deleteTodo = asyncHandler(async (req, res) => {
 //@access Public
 
 const UpdateTodo = asyncHandler(async (req, res) => {
+  // update the todo by using its Id
   const todo = await Todos.findByIdAndUpdate(
     req.params.id,
     {

@@ -7,19 +7,20 @@ import { listValidation } from '../validation/listValidation.js'
 //@access Public
 
 const addList = asyncHandler(async (req, res) => {
+  // Get List infos
   const { name } = req.body
 
   //Validate infos
   const { error } = listValidation(req.body)
   if (error) return res.status(400).json({ message: error.details[0].message })
-
+  // check if the List already exist
   const todoExists = await List.findOne({ name })
 
   if (todoExists) {
     res.status(400)
     throw new Error('List already exists')
   }
-
+  // save the List
   const list = await List.create({
     name,
   })
@@ -40,6 +41,7 @@ const addList = asyncHandler(async (req, res) => {
 //@access Public
 
 const getLists = asyncHandler(async (req, res) => {
+  // get all lists
   const lists = await List.find({})
   res.json(lists)
 })

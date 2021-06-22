@@ -11,12 +11,14 @@ import {
 //@access Public
 
 const authUser = asyncHandler(async (req, res) => {
+  //Get user infos
   const { username, password } = req.body
 
   //Validate infos
   const { error } = loginValidation(req.body)
   if (error) return res.status(400).json({ message: error.details[0].message })
 
+  //Check if the username and match password
   const user = await User.findOne({ username })
 
   if (user && (await user.matchPassword(password))) {
@@ -35,19 +37,21 @@ const authUser = asyncHandler(async (req, res) => {
 //@access Public
 
 const registerUser = asyncHandler(async (req, res) => {
+  // Get user infos
   const { username, password } = req.body
 
   //Validate infos
   const { error } = userValidation(req.body)
   if (error) return res.status(400).json({ message: error.details[0].message })
 
+  //Check if the username already exist
   const userExists = await User.findOne({ username })
 
   if (userExists) {
     res.status(400)
     throw new Error('User already exists')
   }
-
+  //Save the user
   const user = await User.create({
     username,
     password,
